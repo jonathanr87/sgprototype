@@ -1,0 +1,51 @@
+{% extends "post/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="content-section">
+        <div class="media">
+          <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+          <div class="media-body">
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
+
+          </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Profile Roles</legend>
+              <small class="text-muted">
+                Please choose if you are a Service Seeker, Service Provider or both.
+              </small>
+              {{ role_seeker_form|crispy }}
+              {%for n in role %}
+                {% if n.service_seeker %}
+                <small class="text-muted">
+                  <a class="ml-1" href="{% url 'profile_for_seeker' %}">Edit Seeker-Profile</a>
+                </small>
+                {% endif %}
+                {{ role_provider_form|crispy }}
+                {% if n.service_provider %}
+                <small class="text-muted">
+                
+                  <a class="ml-2" href="{% url 'profile_for_provider' %}">Edit Provider-Profile</a>
+                </small>
+                {% endif %}
+              {% endfor %}
+
+              <p class="text-secondary"></p>
+              <legend class="border-bottom mb-4">User Information</legend>
+              {{ u_form|crispy }}
+              {{ p_form|crispy }}
+              
+            </fieldset>
+          <div class="form-group">
+              <button class="btn btn-outline-info" type="submit">Update</button>
+          </div>
+
+         </form>
+      
+</div>
+{% endblock content %}
