@@ -1,1 +1,1 @@
-# sgprototype
+# djangoproject

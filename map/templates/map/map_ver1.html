@@ -1,0 +1,36 @@
+{% extends "posts/layout.html" %}
+{% block content %}
+
+
+<link rel="stylesheet" href="/maps/documentation/javascript/cgc/demos.css">
+</head>
+<body>
+  <div id="map"></div>
+
+  <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJfU4GSloHQUYRctPAyVvm1zI&key=AIzaSyDe-xBZ_PiErHkA7cosJ4GLwU_PmC8X-W0" allowfullscreen>
+  </iframe>
+  <script>
+    function initMap() {
+      var myLatLng = {lat: -25.363, lng: 131.044};
+
+      // Create a map object and specify the DOM element
+      // for display.
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: myLatLng,
+        zoom: 4
+      });
+
+      // Create a marker and set its position.
+      var marker = new google.maps.Marker({
+        map: map,
+        position: myLatLng,
+        title: 'Hello World!'
+      });
+    }
+
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe-xBZ_PiErHkA7cosJ4GLwU_PmC8X-W0&callback=initMap"
+      async defer></script>
+</body>
+</html>
+{% endblock content %}

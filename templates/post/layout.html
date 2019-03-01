@@ -1,0 +1,177 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <!-- Required meta tags -->
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            
+                <!-- Bootstrap CSS -->
+
+                <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">
+                <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
+
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+ 
+        {% if title %}
+            <title>Service Globalizer - {{ title }}</title>
+        {% else %}
+            <title>Service Globalizer</title>
+        {% endif %}
+
+        <style>
+            /* Always set the map height explicitly to define the size of the div
+             * element that contains the map. */
+            #map {
+              height: 100%;
+            }
+
+          </style>
+</head>
+
+<body>
+        <header class="site-header">
+            {% if user.is_authenticated %}
+                <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+                    {% else %}
+                    <nav class="navbar navbar-expand-md navbar-dark bg-not_logged fixed-top">
+                    {% endif %}
+                  <div class="container">
+                      <a class="navbar-brand" href="#">
+                          <img src="https://serviceglobalizer.com/img/logo.png" alt="Logo" style="width:30px;">
+                        </a>
+                    <a class="navbar-brand mr-4" href="/">Service Globalizer</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarToggle">
+                      <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="/">Home</a>
+                        <a class="nav-item nav-link" href="/about">About</a>
+                        <a class="nav-item nav-link" href="/map">Map</a>
+                      </div>
+                      <!-- Navbar Right Side -->
+                      <div class="navbar-nav">
+                        {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a> 
+                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                        {% else %}
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+              </header>
+              <main role="main" class="container">
+                    <div class="row">
+                      <div class="col-md-8">
+                        {% if messages %}
+                          {% for message in messages %}
+                          <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                          </div>
+                          {% endfor %}
+                        {% endif %}
+                        {% block content %}{% endblock %}
+                        <a style="display:block" class="center-align" href="/admin">Admin Login</a>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="content-section">
+                          <h3>Service Providers</h3>
+
+                  
+                          <p class='text-muted'>Search for service
+                              <nav class="nav-item nav-link bg-not_logged">
+                                
+                                  <form class="form-inline" action="/action_page.php">
+                                    <input class="form-control form-control-sm" id="inputdefault" type="text" placeholder="e.g Hairdresser">
+                                    <button class="btn btn-success btn-sm" type="submit">Search</button>
+                                  </form>
+                                </nav>
+                            <ul class="list-group">
+                              
+                              <li class="list-group-item list-group-item-light"></li>
+                             
+                              
+                              {% for post in post %}
+                              <li class="list-group-item list-group-item-light"><a href="/post/details/{{post.id}}">{{post.title}}</a> |  {{post.created_at}}</li>
+                              
+                              {% endfor %}
+
+                              {% if user.is_authenticated %}
+                            
+                              <li class="list-group-item list-group-item-light">Your Last Searches</li>
+                              {% else %}
+                              <li class="list-group-item list-group-item-light">Calendars</li>
+                              {% endif %}
+                         
+                            </ul>
+                          </p>
+                        </div>
+
+
+                        <div class="content-section">
+                            <h3>Service Seekers</h3>
+  
+                    
+                            <p class='text-muted'>Wanted Services
+                          
+                              <ul class="list-group">
+                                
+                                <li class="list-group-item list-group-item-light"><a href="#">Dog walker in Hønefoss</a></li>
+                               
+                                
+                                {% for post in post %}
+                                <li class="list-group-item list-group-item-light"><a href="/post/details/{{post.id}}">{{post.title}}</a> |  {{post.created_at}}</li>
+                                
+                                {% endfor %}
+  
+                                {% if user.is_authenticated %}
+                              
+                                <li class="list-group-item list-group-item-light">Your Last Searches</li>
+                                {% else %}
+                                <li class="list-group-item list-group-item-light">Calendars</li>
+                                {% endif %}
+                           
+                              </ul>
+                            </p>
+                          </div>
+                      </div>
+                    </div>
+
+                 
+                     <script>
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+  document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("main").style.marginLeft = "0";
+  document.body.style.backgroundColor = "white";
+}</script>
+
+
+                  </main>
+
+                  
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+</body>
+</html>
